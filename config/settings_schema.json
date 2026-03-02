@@ -1,0 +1,21 @@
+[
+    {
+        "name": "theme_info",
+        "theme_name": "Thottathil Theme",
+        "theme_author": "Ashiq",
+        "theme_version": "1.0.0",
+        "theme_documentation_url": "https://github.com/Ashiqcodenex-dev/thottathil-build-shopify-theme",
+        "theme_support_url": "https://github.com/Ashiqcodenex-dev/thottathil-build-shopify-theme/issues"
+    },
+    {
+        "name": "Theme Settings",
+        "settings": [
+            {
+                "type": "text",
+                "id": "theme_name",
+                "label": "Theme Name",
+                "default": "Thottathil Theme"
+            }
+        ]
+    }
+]

@@ -1,0 +1,26 @@
+{
+  "name": "thottathil-build-shopify-theme",
+  "version": "1.0.0",
+  "description": "A custom Shopify theme built from scratch.",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./input.css -o ./assets/base.css",
+    "watch:css": "tailwindcss -i ./input.css -o ./assets/base.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ashiqcodenex-dev/thottathil-build-shopify-theme.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Ashiqcodenex-dev/thottathil-build-shopify-theme/issues"
+  },
+  "homepage": "https://github.com/Ashiqcodenex-dev/thottathil-build-shopify-theme#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
+  }
+}
