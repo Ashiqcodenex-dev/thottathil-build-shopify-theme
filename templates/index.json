@@ -1,10 +1,18 @@
 {
     "sections": {
+        "hero": {
+            "type": "hero"
+        },
+        "category_banner": {
+            "type": "category-banner"
+        },
         "main": {
             "type": "main-index"
         }
     },
     "order": [
+        "hero",
+        "category_banner",
         "main"
     ]
 }

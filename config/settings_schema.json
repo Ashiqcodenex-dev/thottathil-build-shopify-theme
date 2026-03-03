@@ -8,13 +8,126 @@
         "theme_support_url": "https://github.com/Ashiqcodenex-dev/thottathil-build-shopify-theme/issues"
     },
     {
-        "name": "Theme Settings",
+        "name": "Logo",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "logo",
+                "label": "Desktop logo image"
+            },
+            {
+                "type": "range",
+                "id": "logo_width",
+                "min": 50,
+                "max": 300,
+                "step": 5,
+                "unit": "px",
+                "label": "Desktop logo width",
+                "default": 130
+            },
+            {
+                "type": "image_picker",
+                "id": "logo_mobile",
+                "label": "Mobile logo image"
+            },
+            {
+                "type": "range",
+                "id": "logo_mobile_width",
+                "min": 50,
+                "max": 200,
+                "step": 5,
+                "unit": "px",
+                "label": "Mobile logo width",
+                "default": 100
+            }
+        ]
+    },
+    {
+        "name": "Colors",
+        "settings": [
+            {
+                "type": "color",
+                "id": "color_primary",
+                "label": "Primary text",
+                "default": "#1f2937"
+            },
+            {
+                "type": "color",
+                "id": "color_background",
+                "label": "Background",
+                "default": "#ffffff"
+            },
+            {
+                "type": "color",
+                "id": "color_accent",
+                "label": "Accent / Links",
+                "default": "#d4af37"
+            }
+        ]
+    },
+    {
+        "name": "Typography",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Headings"
+            },
+            {
+                "type": "font_picker",
+                "id": "font_heading",
+                "default": "assistant_n4",
+                "label": "Heading font"
+            },
+            {
+                "type": "header",
+                "content": "Body"
+            },
+            {
+                "type": "font_picker",
+                "id": "font_body",
+                "default": "assistant_n4",
+                "label": "Body font"
+            }
+        ]
+    },
+    {
+        "name": "Social media",
         "settings": [
             {
                 "type": "text",
-                "id": "theme_name",
-                "label": "Theme Name",
-                "default": "Thottathil Theme"
+                "id": "social_instagram_link",
+                "label": "Instagram",
+                "info": "https://instagram.com/shopify"
+            },
+            {
+                "type": "text",
+                "id": "social_facebook_link",
+                "label": "Facebook",
+                "info": "https://facebook.com/shopify"
+            },
+            {
+                "type": "text",
+                "id": "social_twitter_link",
+                "label": "Twitter/X",
+                "info": "https://twitter.com/shopify"
+            },
+            {
+                "type": "text",
+                "id": "social_tiktok_link",
+                "label": "TikTok",
+                "info": "https://tiktok.com/@shopify"
+            },
+            {
+                "type": "text",
+                "id": "social_youtube_link",
+                "label": "YouTube",
+                "info": "https://youtube.com/shopify"
+            },
+            {
+                "type": "text",
+                "id": "social_pinterest_link",
+                "label": "Pinterest",
+                "info": "https://pinterest.com/shopify"
             }
         ]
     }
