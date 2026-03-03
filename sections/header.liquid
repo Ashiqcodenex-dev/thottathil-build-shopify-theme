@@ -1,4 +1,4 @@
-<div class="relative z-50 bg-white shadow-sm border-b border-gray-100">
+<div class="sticky top-0 z-50 bg-white/85 backdrop-blur-md shadow-sm border-b border-gray-100 transition-all duration-300">
   {% if section.settings.show_announcement %}
     <div
       style="background-color: {{ section.settings.announcement_bg_color }}; color: {{ section.settings.announcement_text_color }};"
@@ -152,7 +152,7 @@
     </button>
   </div>
 
-  <nav class="flex-1 overflow-y-auto py-2">
+  <nav class="flex-1 overflow-y-auto py-2 flex flex-col">
     <ul class="flex flex-col">
       {%- for link in linklists[section.settings.menu].links -%}
         <li class="border-b border-gray-100/50">
@@ -189,6 +189,37 @@
         </li>
       {%- endfor -%}
     </ul>
+
+    <div class="px-8 mt-auto mb-4 pt-10 flex flex-col space-y-6">
+      {%- if section.settings.secondary_menu != blank -%}
+        {%- for link in linklists[section.settings.secondary_menu].links -%}
+          <a
+            href="{{ link.url }}"
+            class="text-[13px] md:text-sm text-gray-900 hover:text-gray-500 transition-colors tracking-wide font-medium"
+          >
+            {{ link.title | escape }}
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- if shop.customer_accounts_enabled -%}
+        {%- if customer -%}
+          <a
+            href="{{ routes.account_url }}"
+            class="text-[13px] md:text-sm text-gray-900 hover:text-gray-500 transition-colors tracking-wide font-medium"
+          >
+            Account
+          </a>
+        {%- else -%}
+          <a
+            href="{{ routes.account_login_url }}"
+            class="text-[13px] md:text-sm text-gray-900 hover:text-gray-500 transition-colors tracking-wide font-medium"
+          >
+            Log In
+          </a>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
   </nav>
 
   <!-- Drawer Social Links -->
@@ -326,6 +357,12 @@
       "id": "menu",
       "label": "Menu",
       "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "secondary_menu",
+      "label": "Secondary Drawer Menu",
+      "info": "This menu appears exactly below the primary browse menu, near the 'Log In' link."
     }
   ],
   "presets": [
