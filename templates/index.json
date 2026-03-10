@@ -6,6 +6,9 @@
         "category_banner": {
             "type": "category-banner"
         },
+        "category_grid": {
+            "type": "category-grid"
+        },
         "main": {
             "type": "main-index"
         }
@@ -13,6 +16,7 @@
     "order": [
         "hero",
         "category_banner",
+        "category_grid",
         "main"
     ]
 }

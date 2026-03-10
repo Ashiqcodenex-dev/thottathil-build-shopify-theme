@@ -1,4 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-body-family);
+  --font-serif: var(--font-heading-family);
+}
+
 @source "./layout/*.liquid";
 @source "./templates/**/*.liquid";
 @source "./sections/*.liquid";

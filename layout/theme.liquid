@@ -4,10 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page_title }}</title>
+
+    {%- liquid
+      assign font_header = settings.font_heading
+      assign font_body = settings.font_body
+    -%}
+
+    <style>
+      {{ font_header | font_face: font_display: 'swap' }}
+      {{ font_body | font_face: font_display: 'swap' }}
+
+      {%- assign font_header_bold = font_header | font_modify: 'weight', 'bold' -%}
+      {%- if font_header_bold -%}
+        {{ font_header_bold | font_face: font_display: 'swap' }}
+      {%- endif -%}
+
+      {%- assign font_body_bold = font_body | font_modify: 'weight', 'bold' -%}
+      {%- if font_body_bold -%}
+        {{ font_body_bold | font_face: font_display: 'swap' }}
+      {%- endif -%}
+
+      {%- assign font_body_italic = font_body | font_modify: 'style', 'italic' -%}
+      {%- if font_body_italic -%}
+        {{ font_body_italic | font_face: font_display: 'swap' }}
+      {%- endif -%}
+
+      :root {
+        --font-heading-family: {{ font_header.family }}, {{ font_header.fallback_families }};
+        --font-heading-style: {{ font_header.style }};
+        --font-heading-weight: {{ font_header.weight }};
+
+        --font-body-family: {{ font_body.family }}, {{ font_body.fallback_families }};
+        --font-body-style: {{ font_body.style }};
+        --font-body-weight: {{ font_body.weight }};
+      }
+    </style>
+
     {{ content_for_header }}
     {{ 'base.css' | asset_url | stylesheet_tag }}
   </head>
-  <body class="bg-white text-gray-800 font-sans">
+  <body
+    class="bg-white text-gray-800"
+    style="font-family: var(--font-body-family); font-weight: var(--font-body-weight); font-style: var(--font-body-style);"
+  >
     {% section 'header' %}
     <main role="main">
       {{ content_for_layout }}
