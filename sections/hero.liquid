@@ -20,7 +20,7 @@
         {%- endif -%}
 
         {%- if section.settings.title != blank -%}
-          <h1 class="text-4xl md:text-5xl lg:text-[72px] font-serif leading-[1.1] mb-8">
+          <h1 class="text-4xl md:text-5xl lg:text-[72px] font-serif leading-[1.1] mb-8 [&_em]:italic [&_em]:text-[#cda066] [&_i]:italic [&_i]:text-[#cda066]">
             {{ section.settings.title }}
           </h1>
         {%- endif -%}
@@ -139,11 +139,11 @@
       "default": "NEW ARRIVALS - SUMMER 2026"
     },
     {
-      "type": "textarea",
+      "type": "inline_richtext",
       "id": "title",
       "label": "Heading",
-      "default": "Artisan fabrics,<br><span style='color: #cda066; font-style: italic;'>thoughtfully</span> curated",
-      "info": "HTML is allowed. Use <br> for line breaks and span tags for custom colors/italics."
+      "default": "Artisan fabrics, <em>thoughtfully</em> curated",
+      "info": "Highlight text and use the format bar to make words italic automatically."
     },
     {
       "type": "richtext",

@@ -50,7 +50,8 @@
       <div class="flex items-center flex-1">
         <button
           id="open-menu-btn"
-          class="flex items-center text-gray-900 hover:opacity-70 focus:outline-none transition-opacity"
+          type="button"
+          class="flex items-center text-gray-900 hover:opacity-70 focus:outline-none transition-opacity cursor-pointer"
         >
           <svg
             class="w-5 h-5 mr-2.5"
@@ -104,7 +105,7 @@
           {%- if section.settings.sticky_logo != blank -%}
             <div
               id="header-sticky-logo"
-              class="hidden opacity-0 transition-opacity duration-300 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center"
+              class="hidden opacity-0 transition-opacity duration-300 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             >
               <img
                 src="{{ section.settings.sticky_logo | image_url: width: 600 }}"
@@ -193,46 +194,99 @@
   id="menu-drawer"
   class="fixed top-0 left-0 h-full w-[360px] max-w-[85vw] bg-white z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl overflow-y-auto flex flex-col"
 >
-  <div class="flex justify-between items-center px-8 py-6 border-b border-gray-100">
-    <span class="text-xl font-serif text-gray-800 tracking-wide">Browse</span>
-    <button id="close-menu-btn" class="text-gray-400 hover:text-gray-800 transition-colors focus:outline-none">
+  <div class="flex justify-between items-center px-8 py-6 border-b border-gray-100/60">
+    <span class="text-[22px] font-serif italic text-gray-900 tracking-wider">Browse</span>
+    <button
+      id="close-menu-btn"
+      type="button"
+      class="text-gray-400 hover:text-gray-800 transition-colors focus:outline-none"
+    >
       <span class="sr-only">Close menu</span>
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
   </div>
 
   <nav class="flex-1 overflow-y-auto py-2 flex flex-col">
     <ul class="flex flex-col">
-      {%- for link in linklists[section.settings.menu].links -%}
+      {%- for link in section.settings.menu.links -%}
         <li class="border-b border-gray-100/50">
           {%- if link.links != blank -%}
             <button
-              class="menu-accordion-btn w-full flex justify-between items-center px-8 py-4 text-sm text-gray-800 hover:bg-gray-50 hover:text-gray-900 transition-colors tracking-wide"
+              type="button"
+              class="menu-accordion-btn w-full flex justify-between items-center px-8 py-2 text-[15.5px] font-medium text-gray-900 hover:bg-gray-50 transition-colors tracking-wide"
               aria-expanded="false"
               data-target="submenu-{{ forloop.index }}"
             >
               <span>{{ link.title | escape }}</span>
-              <span class="text-gray-400 font-light text-lg leading-none plus-icon">+</span>
-              <span class="text-gray-400 font-light text-lg leading-none minus-icon hidden">-</span>
+              <span class="text-gray-400 plus-icon flex items-center">
+                <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4v16m8-8H4"></path>
+                </svg>
+              </span>
+              <span class="text-gray-400 minus-icon hidden flex items-center">
+                <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 12h16"></path>
+                </svg>
+              </span>
             </button>
-            <ul id="submenu-{{ forloop.index }}" class="hidden bg-gray-50/50 py-2 border-t border-gray-100/30">
+            <div id="submenu-{{ forloop.index }}" class="hidden bg-white pl-[44px] pr-8 pb-4">
               {%- for childlink in link.links -%}
-                <li>
-                  <a
-                    href="{{ childlink.url }}"
-                    class="block px-12 py-3 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors tracking-wide"
-                  >
-                    {{ childlink.title | escape }}
-                  </a>
-                </li>
+                {%- if childlink.links != blank -%}
+                  <div class="mt-7 mb-3">
+                    <h3 class="flex items-center text-[10.5px] text-[#8c6b4a] font-bold tracking-[0.2em] uppercase">
+                      {%- if section.settings.child_menu_image != blank -%}
+                        <img
+                          src="{{ section.settings.child_menu_image | image_url: width: 40 }}"
+                          alt="Menu Icon"
+                          class="w-4 h-4 mr-2 object-contain"
+                          width="16"
+                          height="16"
+                        >
+                      {%- elsif section.settings.child_menu_svg != blank -%}
+                        <span class="w-3.5 h-3.5 mr-2 opacity-80 inline-flex items-center justify-center svg-icon-wrapper">
+                          {{ section.settings.child_menu_svg }}
+                        </span>
+                      {%- else -%}
+                        <svg class="w-3.5 h-3.5 mr-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <!-- Custom Default Textile / Paisley Motif SVG -->
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3c-1.5 0-2.5 1-2.5 2.5 0 2 1 3.5 2.5 5.5 1.5 2 2.5 3.5 1.5 6 0 0 2-2 3-5 1-3 1-5-1-6.5-1-1-1-2.5 1-2.5 1 0 2.5 1.5 2.5 3 0-1-1-1.5-1-2.5 0-1.5-1.5-3-3-3z"></path>
+                          <circle cx="12" cy="14" r="1.5" fill="currentColor" stroke="none"></circle>
+                        </svg>
+                      {%- endif -%}
+
+                      {{ childlink.title | escape }}
+                    </h3>
+                  </div>
+                  <ul class="flex flex-col">
+                    {%- for grandchildlink in childlink.links -%}
+                      <li>
+                        <a
+                          href="{{ grandchildlink.url }}"
+                          class="block py-[5.5px] text-[14.5px] font-light text-gray-800 hover:text-[#cda066] transition-colors border-b border-gray-100 tracking-wide"
+                        >
+                          {{ grandchildlink.title | escape }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- else -%}
+                  <div class="mt-2">
+                    <a
+                      href="{{ childlink.url }}"
+                      class="block py-[5.5px] text-[14.5px] font-light text-gray-800 hover:text-[#cda066] transition-colors tracking-wide border-b border-gray-100/90"
+                    >
+                      {{ childlink.title | escape }}
+                    </a>
+                  </div>
+                {%- endif -%}
               {%- endfor -%}
-            </ul>
+            </div>
           {%- else -%}
             <a
               href="{{ link.url }}"
-              class="block px-8 py-4 text-sm text-gray-800 hover:bg-gray-50 hover:text-gray-900 transition-colors tracking-wide flex justify-between items-center"
+              class="block px-8 py-2 text-[15.5px] font-medium {% if link.active %}text-[#cda066]{% else %}text-gray-900 hover:text-gray-600{% endif %} hover:bg-gray-50 transition-colors tracking-wide flex justify-between items-center"
             >
               <span>{{ link.title | escape }}</span>
             </a>
@@ -243,7 +297,7 @@
 
     <div class="px-8 mt-auto mb-4 pt-10 flex flex-col space-y-6">
       {%- if section.settings.secondary_menu != blank -%}
-        {%- for link in linklists[section.settings.secondary_menu].links -%}
+        {%- for link in section.settings.secondary_menu.links -%}
           <a
             href="{{ link.url }}"
             class="text-[13px] md:text-sm text-gray-900 hover:text-gray-500 transition-colors tracking-wide font-medium"
@@ -440,6 +494,22 @@
       "id": "secondary_menu",
       "label": "Secondary Drawer Menu",
       "info": "This menu appears exactly below the primary browse menu, near the 'Log In' link."
+    },
+    {
+      "type": "header",
+      "content": "Child Menu Graphic"
+    },
+    {
+      "type": "image_picker",
+      "id": "child_menu_image",
+      "label": "Upload SVG/Image File",
+      "info": "Choose an image from your files. This will be applied globally to all child menu headings."
+    },
+    {
+      "type": "html",
+      "id": "child_menu_svg",
+      "label": "Or Paste Raw <svg> Code",
+      "info": "Overrides the image upload. Applied globally."
     }
   ],
   "presets": [
@@ -462,8 +532,8 @@
         const handleScroll = () => {
           if (window.scrollY > 50) {
             // Scrolled Exact Design
-            headerWrapper.classList.remove('bg-white/90', 'border-gray-100', 'shadow-sm');
-            headerWrapper.classList.add('bg-white/70', 'backdrop-blur-3xl', 'border-gray-200/50', 'shadow-md');
+            headerWrapper.classList.remove('bg-white/90', 'border-gray-100', 'shadow-sm', 'backdrop-blur-md');
+            headerWrapper.classList.add('bg-white/50', 'backdrop-blur-3xl', 'border-gray-200/50', 'shadow-md');
 
             if (normalLogo && stickyLogo) {
               normalLogo.classList.add('opacity-0');
@@ -477,8 +547,8 @@
             }
           } else {
             // Initial Design
-            headerWrapper.classList.add('bg-white/80', 'border-gray-100', 'shadow-sm');
-            headerWrapper.classList.remove('bg-white/15', 'backdrop-blur-3xl', 'border-gray-200/50', 'shadow-md');
+            headerWrapper.classList.add('bg-white/90', 'border-gray-100', 'shadow-sm', 'backdrop-blur-md');
+            headerWrapper.classList.remove('bg-white/50', 'backdrop-blur-3xl', 'border-gray-200/50', 'shadow-md');
 
             if (normalLogo && stickyLogo) {
               stickyLogo.classList.add('opacity-0');

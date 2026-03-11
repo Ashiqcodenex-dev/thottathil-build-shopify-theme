@@ -50,7 +50,7 @@
         {%- endif -%}
 
         {%- if section.settings.title != blank -%}
-          <h2 class="text-3xl md:text-4xl lg:text-[42px] font-serif not-italic font-normal text-[#2d2926] leading-[1.2] mb-5">
+          <h2 class="text-3xl md:text-4xl lg:text-[42px] font-serif not-italic font-normal text-[#2d2926] leading-[1.2] mb-5 [&_em]:italic [&_em]:text-[#cda066] [&_i]:italic [&_i]:text-[#cda066]">
             {{ section.settings.title }}
           </h2>
         {%- endif -%}
@@ -133,11 +133,11 @@
       "default": "OUR STORY"
     },
     {
-      "type": "textarea",
+      "type": "inline_richtext",
       "id": "title",
       "label": "Heading",
-      "default": "Three generations of woven <span style='color: #cda066; font-style: italic;'>love</span>",
-      "info": "HTML is allowed for styling."
+      "default": "Three generations of woven <em>love</em>",
+      "info": "Highlight text and select italic to stylize it."
     },
     {
       "type": "richtext",

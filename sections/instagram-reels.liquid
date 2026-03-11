@@ -20,7 +20,7 @@
         {%- endif -%}
 
         {%- if section.settings.title != blank -%}
-          <h2 class="text-3xl md:text-4xl lg:text-[48px] font-serif text-white leading-[1.1] mb-6">
+          <h2 class="text-3xl md:text-4xl lg:text-[48px] font-serif text-white leading-[1.1] mb-6 [&_em]:italic [&_em]:text-[#cda066] [&_i]:italic [&_i]:text-[#cda066]">
             {{ section.settings.title }}
           </h2>
         {%- endif -%}
@@ -128,11 +128,11 @@
       "default": "COLLECTIONS"
     },
     {
-      "type": "textarea",
+      "type": "inline_richtext",
       "id": "title",
       "label": "Heading",
-      "default": "See it come to <span style='color: #cda066; font-style: italic;'>life</span>",
-      "info": "HTML is allowed. Use span tags for custom colors/italics."
+      "default": "See it come to <em>life</em>",
+      "info": "Highlight text and select italic to stylize it."
     },
     {
       "type": "richtext",
