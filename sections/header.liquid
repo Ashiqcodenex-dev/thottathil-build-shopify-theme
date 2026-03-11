@@ -45,7 +45,10 @@
 >
   <!-- Main Navbar -->
   <div class="max-w-[100%] px-4 mx-auto">
-    <div class="flex justify-between items-center min-h-[90px] py-4">
+    <div
+      id="header-inner-container"
+      class="flex justify-between items-center min-h-[90px] py-4 transition-all duration-500"
+    >
       <!-- Left: Menu Toggle -->
       <div class="flex items-center flex-1">
         <button
@@ -524,6 +527,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const headerWrapper = document.getElementById('site-header-wrapper');
+      const headerInner = document.getElementById('header-inner-container');
       const announcementBar = document.getElementById('announcement-bar-wrapper');
       const normalLogo = document.getElementById('header-normal-logo');
       const stickyLogo = document.getElementById('header-sticky-logo');
@@ -535,30 +539,34 @@
             headerWrapper.classList.remove('bg-white/90', 'border-gray-100', 'shadow-sm', 'backdrop-blur-md');
             headerWrapper.classList.add('bg-white/50', 'backdrop-blur-3xl', 'border-gray-200/50', 'shadow-md');
 
+            if (headerInner) {
+              headerInner.classList.remove('min-h-[90px]', 'py-4');
+              headerInner.classList.add('min-h-[70px]', 'py-2');
+            }
+
             if (normalLogo && stickyLogo) {
               normalLogo.classList.add('opacity-0');
+              stickyLogo.classList.remove('hidden');
               setTimeout(() => {
-                if (window.scrollY > 50) {
-                  normalLogo.classList.add('hidden');
-                  stickyLogo.classList.remove('hidden');
-                  setTimeout(() => stickyLogo.classList.remove('opacity-0'), 10);
-                }
-              }, 150);
+                if (window.scrollY > 50) stickyLogo.classList.remove('opacity-0');
+              }, 10);
             }
           } else {
             // Initial Design
             headerWrapper.classList.add('bg-white/90', 'border-gray-100', 'shadow-sm', 'backdrop-blur-md');
             headerWrapper.classList.remove('bg-white/50', 'backdrop-blur-3xl', 'border-gray-200/50', 'shadow-md');
 
+            if (headerInner) {
+              headerInner.classList.add('min-h-[90px]', 'py-4');
+              headerInner.classList.remove('min-h-[70px]', 'py-2');
+            }
+
             if (normalLogo && stickyLogo) {
               stickyLogo.classList.add('opacity-0');
+              normalLogo.classList.remove('opacity-0');
               setTimeout(() => {
-                if (window.scrollY <= 50) {
-                  stickyLogo.classList.add('hidden');
-                  normalLogo.classList.remove('hidden');
-                  setTimeout(() => normalLogo.classList.remove('opacity-0'), 10);
-                }
-              }, 150);
+                if (window.scrollY <= 50) stickyLogo.classList.add('hidden');
+              }, 300);
             }
           }
         };
