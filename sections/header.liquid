@@ -1,27 +1,56 @@
-<div class="sticky top-0 z-50 bg-white/85 backdrop-blur-md shadow-sm border-b border-gray-100 transition-all duration-300">
-  {% if section.settings.show_announcement %}
-    <div
-      style="background-color: {{ section.settings.announcement_bg_color }}; color: {{ section.settings.announcement_text_color }};"
-      class="text-xs py-2.5 px-4 text-center tracking-wider flex justify-center items-center font-medium"
-    >
-      {%- if section.settings.announcement_link != blank -%}
-        <a href="{{ section.settings.announcement_link }}" class="hover:underline">
-      {%- endif -%}
-      {{ section.settings.announcement_text | escape }}
-      {%- if section.settings.announcement_link != blank -%}
-        </a>
-      {%- endif -%}
-    </div>
-  {% endif %}
+{%- if section.settings.enable_sticky_header -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+  </style>
+  <script>
+    // Calculate announcement bar height and offset the sticky section up natively
+    // This causes natural scroll offscreen without any layout thrashing (jerking)
+    document.addEventListener('DOMContentLoaded', () => {
+      const section = document.getElementById('shopify-section-{{ section.id }}');
+      const announcement = document.getElementById('announcement-bar-wrapper');
+      const updateStickyTop = () => {
+        if (section && announcement) {
+          section.style.top = `-${announcement.offsetHeight}px`;
+        }
+      };
+      updateStickyTop();
+      window.addEventListener('resize', updateStickyTop);
+    });
+  </script>
+{%- endif -%}
 
+{% if section.settings.show_announcement %}
+  <div
+    id="announcement-bar-wrapper"
+    style="background-color: {{ section.settings.announcement_bg_color }}; color: {{ section.settings.announcement_text_color }};"
+    class="text-xs py-2.5 px-4 text-center tracking-wider flex justify-center items-center font-medium transition-all duration-300 origin-top overflow-hidden"
+  >
+    {%- if section.settings.announcement_link != blank -%}
+      <a href="{{ section.settings.announcement_link }}" class="hover:underline">
+    {%- endif -%}
+    {{ section.settings.announcement_text | escape }}
+    {%- if section.settings.announcement_link != blank -%}
+      </a>
+    {%- endif -%}
+  </div>
+{% endif %}
+
+<div
+  id="site-header-wrapper"
+  class="relative inset-x-0 w-full z-10 bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 transition-all duration-500 ease-in-out"
+>
   <!-- Main Navbar -->
-  <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-[100%] px-4 mx-auto">
     <div class="flex justify-between items-center min-h-[90px] py-4">
       <!-- Left: Menu Toggle -->
       <div class="flex items-center flex-1">
         <button
           id="open-menu-btn"
-          class="flex items-center text-gray-800 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded p-1 transition-colors"
+          class="flex items-center text-gray-900 hover:opacity-70 focus:outline-none transition-opacity"
         >
           <svg
             class="w-5 h-5 mr-2.5"
@@ -30,9 +59,11 @@
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+            <!-- 3-line hamburger icon with bold middle line -->
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M3 6h18M3 18h18"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18"></path>
           </svg>
-          <span class="text-sm tracking-wide font-medium hidden sm:block">Menu</span>
+          <span class="text-[13px] tracking-wide font-medium hidden sm:block">Menu</span>
         </button>
       </div>
 
@@ -41,63 +72,83 @@
         <a href="{{ routes.root_url }}" class="block">
           {%- assign desktop_logo = settings.logo -%}
           {%- assign mobile_logo = settings.logo_mobile | default: desktop_logo -%}
-          {%- if desktop_logo != blank -%}
-            {%- assign logo_alt = desktop_logo.alt | default: shop.name | escape -%}
-            <!-- Desktop Logo -->
-            <img
-              src="{{ desktop_logo | image_url: width: 600 }}"
-              alt="{{ logo_alt }}"
-              width="{{ desktop_logo.width }}"
-              height="{{ desktop_logo.height }}"
-              style="max-width: {{ settings.logo_width }}px; height: auto;"
-              class="hidden sm:block mx-auto"
-              loading="eager"
+
+          <div id="header-normal-logo" class="transition-opacity duration-300">
+            {%- if desktop_logo != blank -%}
+              {%- assign logo_alt = desktop_logo.alt | default: shop.name | escape -%}
+              <!-- Desktop Logo -->
+              <img
+                src="{{ desktop_logo | image_url: width: 600 }}"
+                alt="{{ logo_alt }}"
+                width="{{ desktop_logo.width }}"
+                height="{{ desktop_logo.height }}"
+                style="max-width: {{ settings.logo_width }}px; height: auto;"
+                class="hidden sm:block mx-auto"
+                loading="eager"
+              >
+              <!-- Mobile Logo -->
+              <img
+                src="{{ mobile_logo | image_url: width: 600 }}"
+                alt="{{ logo_alt }}"
+                width="{{ mobile_logo.width }}"
+                height="{{ mobile_logo.height }}"
+                style="max-width: {{ settings.logo_mobile_width }}px; height: auto;"
+                class="block sm:hidden mx-auto"
+                loading="eager"
+              >
+            {%- else -%}
+              <span class="text-2xl font-bold tracking-tight text-gray-900">{{ shop.name }}</span>
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.sticky_logo != blank -%}
+            <div
+              id="header-sticky-logo"
+              class="hidden opacity-0 transition-opacity duration-300 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center"
             >
-            <!-- Mobile Logo -->
-            <img
-              src="{{ mobile_logo | image_url: width: 600 }}"
-              alt="{{ logo_alt }}"
-              width="{{ mobile_logo.width }}"
-              height="{{ mobile_logo.height }}"
-              style="max-width: {{ settings.logo_mobile_width }}px; height: auto;"
-              class="block sm:hidden mx-auto"
-              loading="eager"
-            >
-          {%- else -%}
-            <span class="text-2xl font-bold tracking-tight text-gray-900">{{ shop.name }}</span>
+              <img
+                src="{{ section.settings.sticky_logo | image_url: width: 600 }}"
+                alt="{{ section.settings.sticky_logo.alt | default: shop.name | escape }}"
+                width="{{ section.settings.sticky_logo.width }}"
+                height="{{ section.settings.sticky_logo.height }}"
+                style="max-width: {{ section.settings.sticky_logo_width }}px; height: auto;"
+                class="inline-block"
+                loading="lazy"
+              >
+            </div>
           {%- endif -%}
         </a>
       </div>
 
       <!-- Right: Icons -->
-      <div class="flex items-center justify-end flex-1 space-x-6">
-        <a href="{{ routes.search_url }}" class="text-gray-800 hover:text-gray-500 transition-colors">
+      <div class="flex items-center justify-end flex-1 space-x-5 lg:space-x-7">
+        <a href="{{ routes.search_url }}" class="text-gray-900 hover:opacity-70 transition-opacity">
           <span class="sr-only">Search</span>
           <svg
-            class="w-[22px] h-[22px]"
+            class="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
         </a>
 
         {%- if shop.customer_accounts_enabled -%}
           <a
             href="{{ routes.account_url }}"
-            class="text-gray-800 hover:text-gray-500 transition-colors hidden sm:block"
+            class="text-gray-900 hover:opacity-70 transition-opacity hidden sm:block"
           >
             <span class="sr-only">Account</span>
             <svg
-              class="w-[22px] h-[22px]"
+              class="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
             </svg>
           </a>
         {%- endif -%}
@@ -105,25 +156,25 @@
         <!-- For Cart Icon -->
         <a
           href="{{ routes.cart_url }}"
-          class="text-gray-800 hover:text-gray-500 transition-colors relative flex items-center"
+          class="text-gray-900 hover:opacity-70 transition-opacity relative flex items-center"
         >
           <span class="sr-only">Cart</span>
           <svg
-            class="w-[22px] h-[22px]"
+            class="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
           </svg>
           {%- if cart.item_count > 0 -%}
-            <span class="absolute top-0 right-0 -mt-1.5 -mr-2 bg-[#d4af37] text-white text-[10px] font-bold px-1.5 py-0 rounded-full border border-white">
-              {{- cart.item_count -}}
-            </span>
+            <span
+              class="absolute -top-1 -right-1.5 bg-[#d4af37] w-1.5 h-1.5 rounded-full"
+            ></span>
           {%- else -%}
             <span
-              class="absolute top-0 right-0 -mt-1 -mr-1.5 bg-[#d4af37] w-2 h-2 rounded-full border border-white"
+              class="absolute -top-1 -right-1.5 bg-[#d4af37] w-1.5 h-1.5 rounded-full hidden"
             ></span>
           {%- endif -%}
         </a>
@@ -135,7 +186,7 @@
 <!-- Drawer / Sidebar Menu -->
 <div
   id="menu-drawer-overlay"
-  class="fixed inset-0 bg-black bg-opacity-40 z-[60] hidden transition-opacity duration-300 opacity-0"
+  class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300 opacity-30"
 ></div>
 
 <div
@@ -317,6 +368,32 @@
   "settings": [
     {
       "type": "header",
+      "content": "Sticky Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "Enable Sticky Header",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "sticky_logo",
+      "label": "Sticky Header Logo",
+      "info": "Optional alternate logo for when the header is sticky and scrolled."
+    },
+    {
+      "type": "range",
+      "id": "sticky_logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "label": "Sticky Logo width",
+      "default": 140
+    },
+    {
+      "type": "header",
       "content": "Announcement Bar"
     },
     {
@@ -372,3 +449,53 @@
   ]
 }
 {% endschema %}
+
+{% if section.settings.enable_sticky_header %}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const headerWrapper = document.getElementById('site-header-wrapper');
+      const announcementBar = document.getElementById('announcement-bar-wrapper');
+      const normalLogo = document.getElementById('header-normal-logo');
+      const stickyLogo = document.getElementById('header-sticky-logo');
+
+      if (headerWrapper) {
+        const handleScroll = () => {
+          if (window.scrollY > 50) {
+            // Scrolled Exact Design
+            headerWrapper.classList.remove('bg-white/90', 'border-gray-100', 'shadow-sm');
+            headerWrapper.classList.add('bg-white/70', 'backdrop-blur-3xl', 'border-gray-200/50', 'shadow-md');
+
+            if (normalLogo && stickyLogo) {
+              normalLogo.classList.add('opacity-0');
+              setTimeout(() => {
+                if (window.scrollY > 50) {
+                  normalLogo.classList.add('hidden');
+                  stickyLogo.classList.remove('hidden');
+                  setTimeout(() => stickyLogo.classList.remove('opacity-0'), 10);
+                }
+              }, 150);
+            }
+          } else {
+            // Initial Design
+            headerWrapper.classList.add('bg-white/80', 'border-gray-100', 'shadow-sm');
+            headerWrapper.classList.remove('bg-white/15', 'backdrop-blur-3xl', 'border-gray-200/50', 'shadow-md');
+
+            if (normalLogo && stickyLogo) {
+              stickyLogo.classList.add('opacity-0');
+              setTimeout(() => {
+                if (window.scrollY <= 50) {
+                  stickyLogo.classList.add('hidden');
+                  normalLogo.classList.remove('hidden');
+                  setTimeout(() => normalLogo.classList.remove('opacity-0'), 10);
+                }
+              }, 150);
+            }
+          }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll(); // Init
+      }
+    });
+  </script>
+{% endif %}

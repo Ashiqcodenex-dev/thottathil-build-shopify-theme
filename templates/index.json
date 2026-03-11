@@ -9,6 +9,15 @@
         "category_grid": {
             "type": "category-grid"
         },
+        "instagram_reels": {
+            "type": "instagram-reels"
+        },
+        "our_story": {
+            "type": "our-story"
+        },
+        "newsletter": {
+            "type": "newsletter"
+        },
         "main": {
             "type": "main-index"
         }
@@ -17,6 +26,9 @@
         "hero",
         "category_banner",
         "category_grid",
+        "instagram_reels",
+        "our_story",
+        "newsletter",
         "main"
     ]
 }

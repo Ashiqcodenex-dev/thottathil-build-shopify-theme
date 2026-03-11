@@ -1,0 +1,210 @@
+<div
+  class="py-10 md:py-16 px-4 md:px-8 lg:px-12 relative overflow-hidden"
+  style="background-color: {{ section.settings.bg_color }};"
+>
+  {%- if section.settings.bg_image != blank -%}
+    <div
+      class="absolute inset-0 w-full h-full opacity-40 z-0 pointer-events-none"
+      style="background-image: url('{{ section.settings.bg_image | image_url }}'); background-repeat: repeat; background-position: top left; background-size: auto;"
+    ></div>
+  {%- endif -%}
+
+  <div class="max-w-[1440px] mx-auto relative z-10 w-full">
+    <div class="flex flex-col lg:flex-row bg-white rounded-[4px] shadow-sm overflow-hidden border border-gray-100">
+      <!-- Left Media Area -->
+      <div class="w-full lg:w-1/2 relative min-h-[300px] md:min-h-[400px] lg:min-h-full">
+        {%- if section.settings.video != blank -%}
+          {{
+            section.settings.video
+            | video_tag:
+              class: 'w-full h-full object-cover absolute inset-0',
+              image_size: '1200x',
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false
+          }}
+        {%- elsif section.settings.image != blank -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 1200 }}"
+            alt="{{ section.settings.image.alt | default: section.settings.title | strip_html | escape }}"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            class="w-full h-full object-cover absolute inset-0"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{
+            'lifestyle-1'
+            | placeholder_svg_tag: 'w-full h-full object-cover absolute inset-0 bg-gray-100 text-gray-400'
+          }}
+        {%- endif -%}
+      </div>
+
+      <!-- Right Content Area -->
+      <div class="w-full lg:w-1/2 p-8 md:p-10 lg:py-12 lg:px-16 xl:py-14 xl:px-20 flex flex-col justify-center bg-white">
+        {%- if section.settings.subtitle != blank -%}
+          <p class="text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-5">
+            {{ section.settings.subtitle | escape }}
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="text-3xl md:text-4xl lg:text-[42px] font-serif not-italic font-normal text-[#2d2926] leading-[1.2] mb-5">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+          <div class="text-[15px] opacity-80 text-[#54504e] leading-relaxed mb-8">
+            {{ section.settings.text }}
+          </div>
+        {%- endif -%}
+
+        <!-- Stats Container -->
+        {%- if section.blocks.size > 0 -%}
+          <div class="flex flex-wrap items-center gap-10 md:gap-14 mb-8">
+            {%- for block in section.blocks -%}
+              <div class="flex flex-col" {{ block.shopify_attributes }}>
+                <span class="text-[#cda066] font-serif not-italic font-light text-4xl lg:text-5xl leading-none mb-3">
+                  {{ block.settings.number | escape }}
+                </span>
+                <span class="text-[#54504e] text-[10px] font-medium tracking-[0.2em] uppercase">
+                  {{ block.settings.label | escape }}
+                </span>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <!-- CTA Button -->
+        {%- if section.settings.btn_text != blank -%}
+          <a
+            href="{{ section.settings.btn_link }}"
+            class="inline-flex items-center justify-center px-8 py-3.5 bg-[#3a3229] hover:bg-[#221d17] text-white text-[13px] font-normal tracking-wide transition-colors rounded-[3px] w-fit group"
+          >
+            {{ section.settings.btn_text | escape }}
+            <svg
+              class="w-4 h-4 ml-2.5 transform group-hover:translate-x-1.5 transition-transform opacity-80"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Our Story Card",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Outer Background Color",
+      "default": "#fbf8f1"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Pattern Image",
+      "info": "This image will tile/repeat across the outer background."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Left Image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Left Video (Overrides Image)",
+      "info": "Autoplays silently if provided."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Heading",
+      "default": "Three generations of woven <span style='color: #cda066; font-style: italic;'>love</span>",
+      "info": "HTML is allowed for styling."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Body Text",
+      "default": "<p>What started as a small textile shop in Calicut in 1909 has grown into one of Kerala's most beloved fabric destinations. Our founder believed that beautiful fabric should be accessible to every family — and that belief lives on today.</p>"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Read Our Story"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Statistic",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "115+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "YEARS"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Story Card",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "number": "115+",
+            "label": "YEARS"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "50+",
+            "label": "FABRIC TYPES"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "3",
+            "label": "GENERATIONS"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,146 @@
+<div
+  class="py-24 px-4 md:px-8 relative overflow-hidden flex items-center justify-center min-h-[400px]"
+  style="background-color: {{ section.settings.bg_color }};"
+>
+  {%- if section.settings.bg_image != blank -%}
+    <div
+      class="absolute inset-0 w-full h-full opacity-40 z-0 pointer-events-none"
+      style="background-image: url('{{ section.settings.bg_image | image_url }}'); background-repeat: repeat; background-position: center; background-size: auto;"
+    ></div>
+  {%- endif -%}
+
+  <div class="relative z-10 w-full max-w-2xl mx-auto text-center">
+    {%- if section.settings.subtitle != blank -%}
+      <p class="text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-4">
+        {{ section.settings.subtitle | escape }}
+      </p>
+    {%- endif -%}
+
+    {%- if section.settings.title != blank -%}
+      <h2 class="text-3xl md:text-[42px] font-serif not-italic font-normal text-[#2d2926] leading-tight mb-5">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.settings.text != blank -%}
+      <div class="text-[14px] opacity-80 text-[#54504e] leading-relaxed mb-10 max-w-xl mx-auto">
+        {{ section.settings.text }}
+      </div>
+    {%- endif -%}
+
+    {%- form 'customer', class: 'max-w-xl mx-auto flex flex-col items-center' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="flex w-full overflow-hidden rounded-[3px] shadow-sm mb-5 border border-white/50 bg-white">
+        <input
+          id="NewsletterForm--{{ section.id }}"
+          type="email"
+          name="contact[email]"
+          class="flex-grow px-5 py-3.5 text-[13px] text-gray-800 placeholder-gray-400 bg-white focus:outline-none w-full"
+          value="{{ form.email }}"
+          aria-required="true"
+          autocorrect="off"
+          autocapitalize="off"
+          autocomplete="email"
+          {% if form.errors %}
+            autofocus
+            aria-invalid="true"
+            aria-describedby="Newsletter-error--{{ section.id }}"
+          {% elsif form.posted_successfully? %}
+            aria-describedby="Newsletter-success--{{ section.id }}"
+          {% endif %}
+          placeholder="{{ section.settings.email_placeholder | escape }}"
+          required
+        >
+        <button
+          type="submit"
+          class="px-8 py-3.5 bg-[#1a1511] hover:bg-black text-white text-[13px] font-medium tracking-wide transition-colors whitespace-nowrap"
+          name="commit"
+          id="Subscribe"
+        >
+          {{ section.settings.btn_text | escape }}
+        </button>
+      </div>
+
+      {%- if form.errors -%}
+        <div class="text-red-500 text-[13px] mb-4" id="Newsletter-error--{{ section.id }}">
+          {{ form.errors.translated_fields.email | capitalize }}
+          {{ form.errors.messages.email }}
+        </div>
+      {%- endif -%}
+
+      {%- if form.posted_successfully? -%}
+        <div class="text-green-600 text-[13px] mb-4" id="Newsletter-success--{{ section.id }}" tabindex="-1" autofocus>
+          Thank you for subscribing!
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.footer_text != blank -%}
+        <div class="text-[11px] text-[#8e8a86] tracking-wide font-medium">
+          {{ section.settings.footer_text }}
+        </div>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#fbf8f1"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Pattern Image",
+      "info": "This image will tile/repeat across the background."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "STAY CONNECTED"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Heading",
+      "default": "New arrivals, first.",
+      "info": "HTML is allowed for styling."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Body Text",
+      "default": "<p>Join thousands of fabric lovers and get early access to new collections, seasonal offers, and styling inspiration.</p>"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Placeholder Text",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "richtext",
+      "id": "footer_text",
+      "label": "Footer Note",
+      "default": "<p>No spam. Unsubscribe any time.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

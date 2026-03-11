@@ -1,0 +1,189 @@
+<div
+  class="py-20 px-4 md:px-8 lg:px-12 relative overflow-hidden"
+  style="background-color: #2F2112;"
+>
+  {%- if section.settings.bg_image != blank -%}
+    <div
+      class="absolute inset-0 w-full h-full opacity-40 z-0 pointer-events-none"
+      style="background-image: url('{{ section.settings.bg_image | image_url }}'); background-repeat: repeat; background-position: top left; background-size: auto;"
+    ></div>
+  {%- endif -%}
+
+  <div class="max-w-[1440px] mx-auto relative z-10">
+    <!-- Header Area -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 lg:mb-16 gap-6 pt-4">
+      <div>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-4">
+            {{ section.settings.subtitle | escape }}
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="text-3xl md:text-4xl lg:text-[48px] font-serif text-white leading-[1.1] mb-6">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+          <div class="text-[15px] opacity-70 text-[#efeae1] max-w-lg">
+            {{ section.settings.text }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.btn_text != blank -%}
+        <a
+          href="{{ section.settings.btn_link }}"
+          class="inline-flex items-center text-[#cda066] hover:text-white transition-colors group text-[13px] font-medium tracking-wide"
+        >
+          <svg class="w-5 h-5 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke-width="1.5"></rect>
+            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" stroke-width="1.5"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="2" stroke-linecap="round"></line>
+          </svg>
+          {{ section.settings.btn_text | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <!-- Reels Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      {%- for block in section.blocks -%}
+        <a
+          href="{{ block.settings.reel_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="relative group rounded-[4px] overflow-hidden aspect-[9/16] bg-[#1a1511] flex items-center justify-center block isolate"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.video != blank -%}
+            <!-- Shopify Native Video Hosting -->
+            {{
+              block.settings.video
+              | video_tag:
+                class: 'w-full h-full object-cover absolute inset-0 transition-transform duration-1000 group-hover:scale-105 z-0',
+                image_size: '600x',
+                autoplay: true,
+                loop: true,
+                muted: true,
+                controls: false
+            }}
+          {%- elsif block.settings.image != blank -%}
+            <!-- Static Fallback Image -->
+            <img
+              src="{{ block.settings.image | image_url: width: 600 }}"
+              alt="{{ block.settings.image.alt | default: 'Instagram Reel' | escape }}"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+              class="w-full h-full object-cover absolute inset-0 transition-transform duration-1000 group-hover:scale-105 z-0"
+              loading="lazy"
+            >
+          {%- else -%}
+            <!-- Placeholder -->
+            {{
+              'collection-'
+              | append: forloop.index
+              | placeholder_svg_tag: 'w-full h-full object-cover absolute inset-0 bg-[#221c17] opacity-50 z-0'
+            }}
+          {%- endif -%}
+
+          <!-- Gradient Overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10 pointer-events-none"
+          ></div>
+
+          <!-- Play Button Overlay -->
+          <div class="absolute bottom-6 left-6 z-20 flex items-center justify-center w-12 h-12 rounded-full border-[1px] border-white/50 bg-black/20 backdrop-blur-sm text-white group-hover:bg-white/30 transition-all duration-300">
+            <svg class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M4 4l12 6-12 6z"></path>
+            </svg>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Instagram Reels",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#2F2112"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Pattern Image",
+      "info": "This image will tile/repeat across the background."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "COLLECTIONS"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Heading",
+      "default": "See it come to <span style='color: #cda066; font-style: italic;'>life</span>",
+      "info": "HTML is allowed. Use span tags for custom colors/italics."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Body Text",
+      "default": "<p>Up-close look at textures from print precision to delicate embroidery stitches.</p>"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Instagram Button Text",
+      "default": "Follow on Instagram"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Instagram Link URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "reel",
+      "name": "Reel",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "url",
+          "id": "reel_url",
+          "label": "Instagram Reel URL",
+          "info": "The URL the user will be taken to when clicking this card."
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Autoplay Summary Video",
+          "info": "Upload a short, silent looping video representation of the reel."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Fallback Static Image",
+          "info": "Will display if video is empty."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Reels",
+      "blocks": [{ "type": "reel" }, { "type": "reel" }, { "type": "reel" }, { "type": "reel" }]
+    }
+  ]
+}
+{% endschema %}

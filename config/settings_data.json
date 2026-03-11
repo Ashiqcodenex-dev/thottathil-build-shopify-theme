@@ -1,0 +1,79 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "logo": "shopify://shop_images/thottathil-logo.avif",
+    "logo_mobile": "shopify://shop_images/thottathil-logo.avif",
+    "font_heading": "playfair_n4",
+    "font_body": "outfit_n4",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "show_announcement": true,
+          "announcement_text": "Free shipping on orders above ₹999 · Est. 1909 — Calicut",
+          "announcement_link": "",
+          "announcement_bg_color": "#000000",
+          "announcement_text_color": "#ffffff",
+          "menu": "main-menu",
+          "secondary_menu": ""
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "info_CphtXB": {
+            "type": "info",
+            "settings": {
+              "logo_width": 50,
+              "about_text": "<p>A century of artisan textiles from the heart of Calicut — fabrics curated with love and tradition.</p>",
+              "address_text": "<p>Stadium Plaza, Pavamani Road Junction<br/>Calicut - 673004, Kerala</p>",
+              "contact_text": "<p>8086009944<br/>0495 272 1610</p>"
+            }
+          },
+          "link_list_J9KGce": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Quick links",
+              "menu": ""
+            }
+          },
+          "link_list_pPyNMn": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Quick links",
+              "menu": ""
+            }
+          },
+          "link_list_fVrFXg": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Quick links",
+              "menu": ""
+            }
+          }
+        },
+        "block_order": [
+          "info_CphtXB",
+          "link_list_J9KGce",
+          "link_list_pPyNMn",
+          "link_list_fVrFXg"
+        ],
+        "settings": {
+          "bg_color": "#000000",
+          "text_color": "#d1d1d1",
+          "copyright_text": "Thottathil Silks & Cottons LLP",
+          "show_social": true
+        }
+      }
+    },
+    "content_for_index": []
+  }
+}
