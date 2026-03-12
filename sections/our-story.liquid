@@ -45,7 +45,7 @@
       <div class="w-full lg:w-1/2 p-8 md:p-10 lg:py-12 lg:px-16 xl:py-14 xl:px-20 flex flex-col justify-center bg-white">
         {%- if section.settings.subtitle != blank -%}
           <p
-            class="story-reveal-item text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-5"
+            class="story-reveal-item text-[#cda066] text-[11px] font-bold tracking-normal uppercase mb-5"
             style="--delay: 150ms;"
           >
             {{ section.settings.subtitle | escape }}
@@ -82,7 +82,7 @@
                 <span class="text-[#cda066] font-serif not-italic font-light text-4xl lg:text-5xl leading-none mb-3">
                   {{ block.settings.number | escape }}
                 </span>
-                <span class="text-[#54504e] text-[10px] font-medium tracking-[0.2em] uppercase">
+                <span class="text-[#54504e] text-[10px] font-medium tracking-normal uppercase">
                   {{ block.settings.label | escape }}
                 </span>
               </div>

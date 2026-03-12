@@ -59,7 +59,7 @@
           {%- when 'link_list' -%}
             <div class="flex flex-col space-y-6" {{ block.shopify_attributes }}>
               {%- if block.settings.heading != blank -%}
-                <h3 class="text-xs tracking-[0.15em] uppercase font-bold text-[#E2DDD8]">
+                <h3 class="text-xs tracking-normal uppercase font-bold text-[#E2DDD8]">
                   {{ block.settings.heading | escape }}
                 </h3>
               {%- endif -%}
@@ -87,7 +87,7 @@
           {%- when 'connect' -%}
             <div class="flex flex-col space-y-6" {{ block.shopify_attributes }}>
               {%- if block.settings.heading != blank -%}
-                <h3 class="text-xs tracking-[0.15em] uppercase font-bold text-[#E2DDD8] mb-2">
+                <h3 class="text-xs tracking-normal uppercase font-bold text-[#E2DDD8] mb-2">
                   {{ block.settings.heading | escape }}
                 </h3>
                 <br>

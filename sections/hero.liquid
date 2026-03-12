@@ -90,7 +90,7 @@
     <div class="w-full lg:w-1/2 flex items-center lg:pr-8 xl:pr-16 py-8 lg:py-0">
       <div class="w-full flex flex-col justify-center text-[#2d2926]">
         {%- if section.settings.subtitle != blank -%}
-          <p class="text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-8 animate-reveal-up delay-1">
+          <p class="text-[#cda066] text-[11px] font-bold tracking-normal uppercase mb-8 animate-reveal-up delay-1">
             {{ section.settings.subtitle | escape }}
           </p>
         {%- endif -%}
@@ -111,7 +111,7 @@
           {%- if section.settings.btn1_text != blank -%}
             <a
               href="{{ section.settings.btn1_link }}"
-              class="inline-flex items-center justify-center px-10 py-4 bg-[#3a3229] hover:bg-[#221d17] text-white text-[11px] font-bold uppercase tracking-[0.2em] transition-all rounded-sm shadow-md group"
+              class="inline-flex items-center justify-center px-10 py-4 bg-[#3a3229] hover:bg-[#221d17] text-white text-[11px] font-bold uppercase tracking-normal transition-all rounded-sm shadow-md group"
             >
               {{ section.settings.btn1_text | escape }}
               <svg
@@ -128,7 +128,7 @@
           {%- if section.settings.btn2_text != blank -%}
             <a
               href="{{ section.settings.btn2_link }}"
-              class="text-[#3a3229] text-[11px] font-bold uppercase tracking-[0.2em] border-b border-[#3a3229]/30 hover:border-[#3a3229] transition-all pb-1"
+              class="text-[#3a3229] text-[11px] font-bold uppercase tracking-normal border-b border-[#3a3229]/30 hover:border-[#3a3229] transition-all pb-1"
             >
               {{ section.settings.btn2_text | escape }}
             </a>

@@ -7,7 +7,7 @@
             <div class="flex items-center space-x-6 lg:space-x-12 px-3 lg:px-6 group">
               <a
                 href="{{ link.url }}"
-                class="text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-[#54504e] hover:text-[#cda066] transition-colors whitespace-nowrap"
+                class="text-[10px] md:text-xs font-bold uppercase tracking-normal text-[#54504e] hover:text-[#cda066] transition-colors whitespace-nowrap"
               >
                 {{ link.title | escape }}
               </a>
@@ -37,7 +37,7 @@
           -%}
           {%- for title in fallback_titles -%}
             <div class="flex items-center space-x-6 lg:space-x-12 px-3 lg:px-6">
-              <span class="text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-[#54504e]">
+              <span class="text-[10px] md:text-xs font-bold uppercase tracking-normal text-[#54504e]">
                 {{- title -}}
               </span>
               <div class="marquee-separator text-gray-300 w-3 h-3 flex items-center justify-center opacity-60">

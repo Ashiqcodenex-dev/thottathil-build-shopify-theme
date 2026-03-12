@@ -343,7 +343,7 @@
               {%- for childlink in link.links -%}
                 {%- if childlink.links != blank -%}
                   <div class="mt-4 mb-3">
-                    <h3 class="flex items-center text-[10.5px] text-[#8c6b4a] font-bold tracking-[0.2em] uppercase">
+                    <h3 class="flex items-center text-[10.5px] text-[#8c6b4a] font-bold tracking-normal uppercase">
                       {%- if section.settings.child_menu_image != blank -%}
                         <img
                           src="{{ section.settings.child_menu_image | image_url: width: 40 }}"
