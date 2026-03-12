@@ -3,85 +3,151 @@
   style="background-color: {{ section.settings.bg_color }};"
 >
   {%- if section.settings.bg_image != blank -%}
+    {%- assign pattern_opacity = section.settings.bg_pattern_opacity | divided_by: 100.0 -%}
     <div
-      class="absolute inset-0 w-full h-full opacity-40 z-0 pointer-events-none"
-      style="background-image: url('{{ section.settings.bg_image | image_url }}'); background-repeat: repeat; background-position: center; background-size: auto;"
+      class="absolute inset-0 w-full h-full z-0 pointer-events-none"
+      style="background-image: url('{{ section.settings.bg_image | image_url }}'); background-repeat: repeat; background-position: center; background-size: auto; opacity: {{ pattern_opacity }};"
     ></div>
   {%- endif -%}
 
   <div class="relative z-10 w-full max-w-2xl mx-auto text-center">
     {%- if section.settings.subtitle != blank -%}
-      <p class="text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-4">
-        {{ section.settings.subtitle | escape }}
-      </p>
+      <div class="newsletter-reveal-item" style="--delay: 100ms;">
+        <p class="text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-4">
+          {{ section.settings.subtitle | escape }}
+        </p>
+      </div>
     {%- endif -%}
 
     {%- if section.settings.title != blank -%}
-      <h2 class="text-3xl md:text-[42px] font-serif not-italic font-normal text-[#2d2926] leading-tight mb-5">
-        {{ section.settings.title }}
-      </h2>
+      <div class="newsletter-reveal-item" style="--delay: 250ms;">
+        <h2 class="text-3xl md:text-[42px] font-serif not-italic font-normal text-[#2d2926] leading-tight mb-5">
+          {{ section.settings.title }}
+        </h2>
+      </div>
     {%- endif -%}
 
     {%- if section.settings.text != blank -%}
-      <div class="text-[14px] opacity-80 text-[#54504e] leading-relaxed mb-10 max-w-xl mx-auto">
-        {{ section.settings.text }}
+      <div class="newsletter-reveal-item" style="--delay: 400ms;">
+        <div class="text-[14px] opacity-80 text-[#54504e] leading-relaxed mb-10 max-w-xl mx-auto">
+          {{ section.settings.text }}
+        </div>
       </div>
     {%- endif -%}
 
-    {%- form 'customer', class: 'max-w-xl mx-auto flex flex-col items-center' -%}
-      <input type="hidden" name="contact[tags]" value="newsletter">
-      <div class="flex w-full overflow-hidden rounded-[3px] shadow-sm mb-5 border border-white/50 bg-white">
-        <input
-          id="NewsletterForm--{{ section.id }}"
-          type="email"
-          name="contact[email]"
-          class="flex-grow px-5 py-3.5 text-[13px] text-gray-800 placeholder-gray-400 bg-white focus:outline-none w-full"
-          value="{{ form.email }}"
-          aria-required="true"
-          autocorrect="off"
-          autocapitalize="off"
-          autocomplete="email"
-          {% if form.errors %}
+    <div class="newsletter-reveal-item" style="--delay: 550ms;">
+      {%- form 'customer', class: 'max-w-xl mx-auto flex flex-col items-center' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="flex w-full overflow-hidden rounded-[3px] shadow-sm mb-5 border border-white/50 bg-white">
+          <input
+            id="NewsletterForm--{{ section.id }}"
+            type="email"
+            name="contact[email]"
+            class="flex-grow px-5 py-3.5 text-[13px] text-gray-800 placeholder-gray-400 bg-white focus:outline-none w-full"
+            value="{{ form.email }}"
+            aria-required="true"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            {% if form.errors %}
+              autofocus
+              aria-invalid="true"
+              aria-describedby="Newsletter-error--{{ section.id }}"
+            {% elsif form.posted_successfully? %}
+              aria-describedby="Newsletter-success--{{ section.id }}"
+            {% endif %}
+            placeholder="{{ section.settings.email_placeholder | escape }}"
+            required
+          >
+          <button
+            type="submit"
+            class="px-8 py-3.5 bg-[#1a1511] hover:bg-black text-white text-[13px] font-medium tracking-wide transition-colors whitespace-nowrap"
+            name="commit"
+            id="Subscribe"
+          >
+            {{ section.settings.btn_text | escape }}
+          </button>
+        </div>
+
+        {%- if form.errors -%}
+          <div class="text-red-500 text-[13px] mb-4" id="Newsletter-error--{{ section.id }}">
+            {{ form.errors.translated_fields.email | capitalize }}
+            {{ form.errors.messages.email }}
+          </div>
+        {%- endif -%}
+
+        {%- if form.posted_successfully? -%}
+          <div
+            class="text-green-600 text-[13px] mb-4"
+            id="Newsletter-success--{{ section.id }}"
+            tabindex="-1"
             autofocus
-            aria-invalid="true"
-            aria-describedby="Newsletter-error--{{ section.id }}"
-          {% elsif form.posted_successfully? %}
-            aria-describedby="Newsletter-success--{{ section.id }}"
-          {% endif %}
-          placeholder="{{ section.settings.email_placeholder | escape }}"
-          required
-        >
-        <button
-          type="submit"
-          class="px-8 py-3.5 bg-[#1a1511] hover:bg-black text-white text-[13px] font-medium tracking-wide transition-colors whitespace-nowrap"
-          name="commit"
-          id="Subscribe"
-        >
-          {{ section.settings.btn_text | escape }}
-        </button>
-      </div>
+          >
+            Thank you for subscribing!
+          </div>
+        {%- endif -%}
 
-      {%- if form.errors -%}
-        <div class="text-red-500 text-[13px] mb-4" id="Newsletter-error--{{ section.id }}">
-          {{ form.errors.translated_fields.email | capitalize }}
-          {{ form.errors.messages.email }}
-        </div>
-      {%- endif -%}
-
-      {%- if form.posted_successfully? -%}
-        <div class="text-green-600 text-[13px] mb-4" id="Newsletter-success--{{ section.id }}" tabindex="-1" autofocus>
-          Thank you for subscribing!
-        </div>
-      {%- endif -%}
-
-      {%- if section.settings.footer_text != blank -%}
-        <div class="text-[11px] text-[#8e8a86] tracking-wide font-medium">
-          {{ section.settings.footer_text }}
-        </div>
-      {%- endif -%}
-    {%- endform -%}
+        {%- if section.settings.footer_text != blank -%}
+          <div class="text-[11px] text-[#8e8a86] tracking-wide font-medium">
+            {{ section.settings.footer_text }}
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
   </div>
 </div>
+
+<style>
+  .newsletter-reveal-item {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition: none;
+  }
+
+  .newsletter-reveal-item.is-visible {
+    animation: newsletter-fade-up 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes newsletter-fade-up {
+    0% {
+      opacity: 0;
+      transform: translateY(40px) scale(0.96);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    function initNewsletterReveal() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px',
+        }
+      );
+
+      document.querySelectorAll('.newsletter-reveal-item').forEach((item) => {
+        observer.observe(item);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initNewsletterReveal);
+    document.addEventListener('shopify:section:load', initNewsletterReveal);
+  })();
+</script>
 
 {% schema %}
 {
@@ -98,6 +164,16 @@
       "id": "bg_image",
       "label": "Background Pattern Image",
       "info": "This image will tile/repeat across the background."
+    },
+    {
+      "type": "range",
+      "id": "bg_pattern_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Background Pattern Opacity",
+      "default": 40
     },
     {
       "type": "text",

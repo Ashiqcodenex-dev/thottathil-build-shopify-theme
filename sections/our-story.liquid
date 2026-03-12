@@ -9,10 +9,10 @@
     ></div>
   {%- endif -%}
 
-  <div class="max-w-[1440px] mx-auto relative z-10 w-full">
+  <div class="max-w-[1440px] mx-auto relative z-10 w-full story-reveal-container">
     <div class="flex flex-col lg:flex-row bg-white rounded-[4px] shadow-sm overflow-hidden border border-gray-100">
       <!-- Left Media Area -->
-      <div class="w-full lg:w-1/2 relative min-h-[300px] md:min-h-[400px] lg:min-h-full">
+      <div class="w-full lg:w-1/2 relative min-h-[300px] md:min-h-[400px] lg:min-h-full story-image-reveal">
         {%- if section.settings.video != blank -%}
           {{
             section.settings.video
@@ -44,19 +44,28 @@
       <!-- Right Content Area -->
       <div class="w-full lg:w-1/2 p-8 md:p-10 lg:py-12 lg:px-16 xl:py-14 xl:px-20 flex flex-col justify-center bg-white">
         {%- if section.settings.subtitle != blank -%}
-          <p class="text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-5">
+          <p
+            class="story-reveal-item text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-5"
+            style="--delay: 150ms;"
+          >
             {{ section.settings.subtitle | escape }}
           </p>
         {%- endif -%}
 
         {%- if section.settings.title != blank -%}
-          <h2 class="text-3xl md:text-4xl lg:text-[42px] font-serif not-italic font-normal text-[#2d2926] leading-[1.2] mb-5 [&_em]:italic [&_em]:text-[#cda066] [&_i]:italic [&_i]:text-[#cda066]">
+          <h2
+            class="story-reveal-item text-3xl md:text-4xl lg:text-[42px] font-serif not-italic font-normal text-[#2d2926] leading-[1.2] mb-5 [&_em]:italic [&_em]:text-[#cda066] [&_i]:italic [&_i]:text-[#cda066]"
+            style="--delay: 300ms;"
+          >
             {{ section.settings.title }}
           </h2>
         {%- endif -%}
 
         {%- if section.settings.text != blank -%}
-          <div class="text-[15px] opacity-80 text-[#54504e] leading-relaxed mb-8">
+          <div
+            class="story-reveal-item text-[15px] opacity-80 text-[#54504e] leading-relaxed mb-8"
+            style="--delay: 450ms;"
+          >
             {{ section.settings.text }}
           </div>
         {%- endif -%}
@@ -65,7 +74,11 @@
         {%- if section.blocks.size > 0 -%}
           <div class="flex flex-wrap items-center gap-10 md:gap-14 mb-8">
             {%- for block in section.blocks -%}
-              <div class="flex flex-col" {{ block.shopify_attributes }}>
+              <div
+                class="story-reveal-item flex flex-col"
+                {{ block.shopify_attributes }}
+                style="--delay: {{ 500 | plus: forloop.index0 | times: 100 }}ms;"
+              >
                 <span class="text-[#cda066] font-serif not-italic font-light text-4xl lg:text-5xl leading-none mb-3">
                   {{ block.settings.number | escape }}
                 </span>
@@ -79,25 +92,99 @@
 
         <!-- CTA Button -->
         {%- if section.settings.btn_text != blank -%}
-          <a
-            href="{{ section.settings.btn_link }}"
-            class="inline-flex items-center justify-center px-8 py-3.5 bg-[#3a3229] hover:bg-[#221d17] text-white text-[13px] font-normal tracking-wide transition-colors rounded-[3px] w-fit group"
-          >
-            {{ section.settings.btn_text | escape }}
-            <svg
-              class="w-4 h-4 ml-2.5 transform group-hover:translate-x-1.5 transition-transform opacity-80"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div class="story-reveal-item" style="--delay: 850ms;">
+            <a
+              href="{{ section.settings.btn_link }}"
+              class="inline-flex items-center justify-center px-8 py-3.5 bg-[#3a3229] hover:bg-[#221d17] text-white text-[13px] font-normal tracking-wide transition-colors rounded-[3px] w-fit group"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-            </svg>
-          </a>
+              {{ section.settings.btn_text | escape }}
+              <svg
+                class="w-4 h-4 ml-2.5 transform group-hover:translate-x-1.5 transition-transform opacity-80"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </a>
+          </div>
         {%- endif -%}
       </div>
     </div>
   </div>
 </div>
+
+<style>
+  .story-image-reveal {
+    opacity: 0;
+    transform: scale(1.05);
+    transition: none;
+  }
+
+  .story-image-reveal.is-visible {
+    animation: story-image-scale 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .story-reveal-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: none;
+  }
+
+  .story-reveal-item.is-visible {
+    animation: story-fade-up 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes story-image-scale {
+    0% {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes story-fade-up {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    function initStoryReveal() {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.story-reveal-item, .story-image-reveal').forEach((item) => {
+        observer.observe(item);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initStoryReveal);
+    document.addEventListener('shopify:section:load', initStoryReveal);
+  })();
+</script>
 
 {% schema %}
 {

@@ -1,11 +1,12 @@
 <div
   class="py-20 px-4 md:px-8 lg:px-12 relative overflow-hidden"
-  style="background-color: #2F2112;"
+  style="background-color: {{ section.settings.bg_color }};"
 >
   {%- if section.settings.bg_image != blank -%}
+    {%- assign pattern_opacity = section.settings.bg_pattern_opacity | divided_by: 100.0 -%}
     <div
-      class="absolute inset-0 w-full h-full opacity-40 z-0 pointer-events-none"
-      style="background-image: url('{{ section.settings.bg_image | image_url }}'); background-repeat: repeat; background-position: top left; background-size: auto;"
+      class="absolute inset-0 w-full h-full z-0 pointer-events-none"
+      style="background-image: url('{{ section.settings.bg_image | image_url }}'); background-repeat: repeat; background-position: top left; background-size: auto; opacity: {{ pattern_opacity }};"
     ></div>
   {%- endif -%}
 
@@ -48,14 +49,15 @@
     </div>
 
     <!-- Reels Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 reels-reveal-container">
       {%- for block in section.blocks -%}
         <a
           href="{{ block.settings.reel_url }}"
           target="_blank"
           rel="noopener noreferrer"
-          class="relative group rounded-[4px] overflow-hidden aspect-[9/16] bg-[#1a1511] flex items-center justify-center block isolate"
+          class="reel-reveal-item relative group rounded-[4px] overflow-hidden aspect-[9/16] bg-[#1a1511] flex items-center justify-center block isolate"
           {{ block.shopify_attributes }}
+          style="--delay: {{ forloop.index0 | times: 120 }}ms;"
         >
           {%- if block.settings.video != blank -%}
             <!-- Shopify Native Video Hosting -->
@@ -105,6 +107,63 @@
   </div>
 </div>
 
+<style>
+  .reels-reveal-container {
+    perspective: 1200px;
+  }
+
+  .reel-reveal-item {
+    opacity: 0;
+    transform: translateX(60px) scale(0.95);
+    visibility: hidden;
+  }
+
+  .reel-reveal-item.is-visible {
+    visibility: visible;
+    animation: slide-from-right 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes slide-from-right {
+    0% {
+      opacity: 0;
+      transform: translateX(100px) scale(0.9) skewX(-2deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scale(1) skewX(0);
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    function initReelsReveal() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: '0px 0px -40px 0px',
+        }
+      );
+
+      document.querySelectorAll('.reel-reveal-item').forEach((item) => {
+        observer.observe(item);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initReelsReveal);
+    document.addEventListener('shopify:section:load', initReelsReveal);
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Instagram Reels",
@@ -120,6 +179,16 @@
       "id": "bg_image",
       "label": "Background Pattern Image",
       "info": "This image will tile/repeat across the background."
+    },
+    {
+      "type": "range",
+      "id": "bg_pattern_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Background Pattern Opacity",
+      "default": 10
     },
     {
       "type": "text",

@@ -15,7 +15,7 @@
     </div>
 
     <!-- Bento Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 overflow-hidden">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 overflow-hidden section-reveal-container">
       {%- for block in section.blocks -%}
         {%- capture grid_class -%}
           {%- case forloop.index -%}
@@ -27,8 +27,9 @@
         {%- endcapture -%}
 
         <div
-          class="relative group overflow-hidden rounded-[4px] bg-gray-50 {{ grid_class }}"
+          class="relative group overflow-hidden rounded-[4px] bg-gray-50 {{ grid_class }} reveal-item"
           {{ block.shopify_attributes }}
+          style="--delay: {{ forloop.index0 | times: 150 }}ms;"
         >
           <a href="{{ block.settings.link }}" class="block w-full h-full">
             {%- if block.settings.image != blank -%}
@@ -50,14 +51,14 @@
 
             <!-- Rising Shadow Overlay -->
             <div
-              class="absolute inset-x-0 bottom-0 h-[150%] bg-gradient-to-t from-black/90 via-black/20 to-transparent transform transition-all duration-700 ease-out translate-y-24 group-hover:translate-y-0 opacity-60 group-hover:opacity-100"
+              class="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-black/90 via-black/20 to-transparent transform transition-all duration-700 ease-out translate-y-24 group-hover:translate-y-0 opacity-60 group-hover:opacity-100"
             ></div>
 
             <!-- Content Area -->
             <div class="absolute inset-0 flex flex-col justify-end p-8 lg:p-10 z-10">
               <div class="transform transition-transform duration-700 ease-out translate-y-5 lg:translate-y-7 group-hover:translate-y-0">
                 {%- if block.settings.title != blank -%}
-                  <h3 class="text-white text-2xl lg:text-[28px] font-serif mb-1 lg:mb-2 drop-shadow-sm">
+                  <h3 class="text-white text-2xl lg:text-[28px] font-serif drop-shadow-sm">
                     {{ block.settings.title | escape }}
                   </h3>
                 {%- endif -%}
@@ -74,6 +75,62 @@
     </div>
   </div>
 </div>
+
+<style>
+  .section-reveal-container {
+    perspective: 1000px;
+  }
+
+  .reveal-item {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    transition: none;
+  }
+
+  .reveal-item.is-visible {
+    animation: stack-reveal 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes stack-reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(80px) scale(0.92);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    function initReveal() {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.reveal-item').forEach((item) => {
+        observer.observe(item);
+      });
+    }
+
+    // Initialize on load and when theme sections are reloaded in editor
+    document.addEventListener('DOMContentLoaded', initReveal);
+    document.addEventListener('shopify:section:load', initReveal);
+  })();
+</script>
 
 {% schema %}
 {

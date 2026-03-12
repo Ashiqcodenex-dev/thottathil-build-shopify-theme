@@ -1,11 +1,87 @@
+<style>
+  @keyframes hero-reveal-up {
+    0% {
+      opacity: 0;
+      transform: translateY(40px) skewY(2deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) skewY(0);
+    }
+  }
+
+  @keyframes hero-image-reveal {
+    0% {
+      opacity: 0;
+      transform: scale(1.1) translateX(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateX(0);
+    }
+  }
+
+  @keyframes hero-fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: var(--pattern-opacity, 1);
+    }
+  }
+
+  @keyframes hero-fade-in-right {
+    0% {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-reveal-up {
+    opacity: 0;
+    animation: hero-reveal-up 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+  }
+
+  .animate-image-reveal {
+    opacity: 0;
+    animation: hero-image-reveal 1.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+  }
+
+  .animate-bg-fade {
+    opacity: 0;
+    animation: hero-fade-in 2s ease-out forwards;
+  }
+
+  .delay-1 {
+    animation-delay: 0.2s;
+  }
+  .delay-2 {
+    animation-delay: 0.4s;
+  }
+  .delay-3 {
+    animation-delay: 0.6s;
+  }
+  .delay-4 {
+    animation-delay: 0.8s;
+  }
+  .delay-5 {
+    animation-delay: 1s;
+  }
+</style>
+
 <div
   class="relative w-full lg:h-[calc(100vh-140px)] overflow-hidden"
   style="background-color: {{ section.settings.bg_color }};"
 >
   {%- if section.settings.bg_image != blank -%}
+    {%- assign pattern_opacity = section.settings.bg_pattern_opacity | divided_by: 100.0 -%}
     <div
-      class="absolute inset-0 w-full h-full opacity-40 z-0 pointer-events-none"
-      style="background-image: url('{{ section.settings.bg_image | image_url }}'); background-repeat: repeat; background-position: top left; background-size: auto;"
+      class="absolute inset-0 w-full h-full z-0 pointer-events-none animate-bg-fade"
+      style="background-image: url('{{ section.settings.bg_image | image_url }}'); background-repeat: repeat; background-position: top left; background-size: auto; --pattern-opacity: {{ pattern_opacity }};"
     ></div>
   {%- endif -%}
 
@@ -14,24 +90,24 @@
     <div class="w-full lg:w-1/2 flex items-center lg:pr-8 xl:pr-16 py-8 lg:py-0">
       <div class="w-full flex flex-col justify-center text-[#2d2926]">
         {%- if section.settings.subtitle != blank -%}
-          <p class="text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-8">
+          <p class="text-[#cda066] text-[11px] font-bold tracking-[0.25em] uppercase mb-8 animate-reveal-up delay-1">
             {{ section.settings.subtitle | escape }}
           </p>
         {%- endif -%}
 
         {%- if section.settings.title != blank -%}
-          <h1 class="text-4xl md:text-5xl lg:text-[72px] font-serif leading-[1.1] mb-8 [&_em]:italic [&_em]:text-[#cda066] [&_i]:italic [&_i]:text-[#cda066]">
+          <h1 class="text-4xl md:text-5xl lg:text-[72px] font-serif leading-[1.1] mb-8 [&_em]:italic [&_em]:text-[#cda066] [&_i]:italic [&_i]:text-[#cda066] animate-reveal-up delay-2">
             {{ section.settings.title }}
           </h1>
         {%- endif -%}
 
         {%- if section.settings.text != blank -%}
-          <div class="text-[16px] opacity-75 leading-relaxed max-w-[460px] mb-12 text-[#54504e]">
+          <div class="text-[16px] opacity-75 leading-relaxed max-w-[460px] mb-12 text-[#54504e] animate-reveal-up delay-3">
             {{ section.settings.text }}
           </div>
         {%- endif -%}
 
-        <div class="flex flex-wrap items-center gap-8">
+        <div class="flex flex-wrap items-center gap-8 animate-reveal-up delay-4">
           {%- if section.settings.btn1_text != blank -%}
             <a
               href="{{ section.settings.btn1_link }}"
@@ -63,7 +139,7 @@
 
     <!-- Right Media (Image / Video) -->
     <div class="w-full lg:w-1/2 relative min-h-[400px] lg:min-h-full flex-shrink-0 z-10 flex flex-col mt-8 lg:mt-0 pb-12 lg:pb-0">
-      <div class="w-full h-full relative overflow-hidden flex-grow shadow-2xl">
+      <div class="w-full h-full relative overflow-hidden flex-grow shadow-2xl animate-image-reveal">
         {%- if section.settings.video != blank -%}
           <div class="w-full h-full absolute inset-0">
             {{
@@ -131,6 +207,16 @@
       "id": "bg_image",
       "label": "Background Pattern Image (Optional)",
       "info": "Upload a repeating floral pattern line-art image."
+    },
+    {
+      "type": "range",
+      "id": "bg_pattern_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Background Pattern Opacity",
+      "default": 40
     },
     {
       "type": "text",

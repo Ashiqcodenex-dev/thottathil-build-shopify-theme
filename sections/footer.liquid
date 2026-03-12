@@ -39,17 +39,19 @@
                 {%- endif -%}
               {%- endif -%}
 
-              <div class="space-y-6 text-[13px] opacity-80 leading-relaxed max-w-sm">
+              <div class="space-y-6 text-[13px] leading-relaxed max-w-sm">
                 {%- if block.settings.about_text != blank -%}
-                  <div class="prose-p:m-0">{{ block.settings.about_text }}</div>
+                  <div class="prose-p:m-0 text-white/70">{{ block.settings.about_text }}</div>
                 {%- endif -%}
 
                 {%- if block.settings.address_text != blank -%}
-                  <div class="prose-p:m-0">{{ block.settings.address_text }}</div>
+                  <div class="prose-p:m-0 text-white/70">{{ block.settings.address_text }}</div>
                 {%- endif -%}
 
                 {%- if block.settings.contact_text != blank -%}
-                  <div class="prose-p:m-0">{{ block.settings.contact_text }}</div>
+                  <div class="prose-p:m-0 text-[#B09878] font-medium tracking-wider">
+                    {{ block.settings.contact_text }}
+                  </div>
                 {%- endif -%}
               </div>
             </div>
@@ -57,16 +59,16 @@
           {%- when 'link_list' -%}
             <div class="flex flex-col space-y-6" {{ block.shopify_attributes }}>
               {%- if block.settings.heading != blank -%}
-                <h3 class="text-xs tracking-[0.15em] uppercase font-bold text-white">
+                <h3 class="text-xs tracking-[0.15em] uppercase font-bold text-[#E2DDD8]">
                   {{ block.settings.heading | escape }}
                 </h3>
               {%- endif -%}
 
               {%- if block.settings.menu != blank -%}
-                <ul class="space-y-4 text-[13px] opacity-80">
+                <ul class="space-y-4 text-[13px] text-[#E6D8D0]/50">
                   {%- for link in linklists[block.settings.menu].links -%}
                     <li>
-                      <a href="{{ link.url }}" class="hover:text-white hover:opacity-100 transition-colors">
+                      <a href="{{ link.url }}" class="hover:text-white transition-colors">
                         {{ link.title }}
                       </a>
                     </li>
@@ -74,10 +76,10 @@
                 </ul>
               {%- else -%}
                 <!-- Fallback menu placeholder for customizer -->
-                <ul class="space-y-4 text-[13px] opacity-80">
-                  <li><a href="#" class="hover:text-white hover:opacity-100 transition-colors">Example link 1</a></li>
-                  <li><a href="#" class="hover:text-white hover:opacity-100 transition-colors">Example link 2</a></li>
-                  <li><a href="#" class="hover:text-white hover:opacity-100 transition-colors">Example link 3</a></li>
+                <ul class="space-y-4 text-[13px] text-[#E6D8D0]/50">
+                  <li><a href="#" class="hover:text-white transition-colors">Example link 1</a></li>
+                  <li><a href="#" class="hover:text-white transition-colors">Example link 2</a></li>
+                  <li><a href="#" class="hover:text-white transition-colors">Example link 3</a></li>
                 </ul>
               {%- endif -%}
             </div>
@@ -85,7 +87,7 @@
           {%- when 'connect' -%}
             <div class="flex flex-col space-y-6" {{ block.shopify_attributes }}>
               {%- if block.settings.heading != blank -%}
-                <h3 class="text-xs tracking-[0.15em] uppercase font-bold text-white mb-2">
+                <h3 class="text-xs tracking-[0.15em] uppercase font-bold text-[#E2DDD8] mb-2">
                   {{ block.settings.heading | escape }}
                 </h3>
                 <br>
@@ -159,14 +161,15 @@
     </div>
 
     <!-- Bottom Footer border & Copyright -->
-    <div class="border-t border-white/10 mt-6 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[11px] opacity-60">
+    <div class="border-t border-white/10 mt-6 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[11px] text-[#E6D8D0]/50">
       <div>
         &copy; {{ 'now' | date: '%Y' }}
         {{ section.settings.copyright_text | default: shop.name | escape }}
       </div>
 
       <div class="tracking-wide">
-        woven by <a href="https://codenex.in" target="_blank" class="text-white font-medium ml-1 text-xs">codenex</a>
+        woven by
+        <a href="https://codenex.in" target="_blank" class="text-[#E6D8D0] font-medium ml-1 text-xs">codenex</a>
       </div>
     </div>
   </div>
@@ -180,7 +183,7 @@
       "type": "color",
       "id": "bg_color",
       "label": "Background color",
-      "default": "#1a1614"
+      "default": "#000000"
     },
     {
       "type": "color",
